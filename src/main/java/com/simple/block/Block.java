@@ -7,14 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Block {
 
-    public String hash;
-    public String previousHash;
+    private String hash;
+    private String previousHash;
     private String data;
     private long timeStamp;
 
-    private int nonce;
-
-    public Block(String data, String previousHash) {
+    public Block(final String data,final String previousHash) {
         this.data = data;
         this.previousHash = previousHash;
         this.timeStamp = System.currentTimeMillis();
@@ -22,16 +20,6 @@ public class Block {
     }
 
     public String calculateHash() {
-        return HashingUtil.sha256(previousHash + timeStamp + nonce + data);
-    }
-
-    public void mineBlock(int difficulty) {
-        String target = new String(new char[difficulty]).replace('\0', '0'); //Create a string with difficulty * "0"
-        while (!hash.substring(0, difficulty).equals(target)) {
-            nonce++;
-            hash = calculateHash();
-
-        }
-        log.info("Block Mined!!! {} block nonce {}  {}", data, nonce, hash);
+        return HashingUtil.sha256(previousHash + timeStamp + data);
     }
 }
